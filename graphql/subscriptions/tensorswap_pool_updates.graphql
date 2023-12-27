@@ -1,0 +1,30 @@
+subscription TswapOrderUpdateAll {
+  tswapOrderUpdateAll {
+    address
+    pool {
+      address
+      createdUnix
+      curveType
+      delta
+      mmCompoundFees
+      mmFeeBps
+      nftsForSale {
+        onchainId
+      }
+      nftsHeld
+      ownerAddress
+      poolType
+      solBalance
+      startingPrice
+      buyNowPrice
+      sellNowPrice
+      statsAccumulatedMmProfit
+      statsTakerBuyCount
+      statsTakerSellCount
+      takerBuyCount
+      takerSellCount
+      updatedAt
+    }
+    slug
+  }
+}
