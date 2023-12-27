@@ -1,13 +1,24 @@
 [package]
-name = "tensor-automaker"
+name = "tensor-stream"
 version = "0.1.0"
 edition = "2021"
+authors = ["mektigboy <mektigboy@protonmail.com>"]
+description = "A Rust client library for real-time updates from the Tensor NFT marketplace and its aggregated marketplaces, using GraphQL subscriptions."
+repository = "https://github.com/protecc-labs/tensor-stream-rs"
+license = "MIT"
+categories = ["graphql", "websockets", "nft"]
+keywords = ["tensor", "tensorswap"]
 
 [dependencies]
 
+# Error handling
+anyhow = { version = "1.0.77", default-features = false, features = ["std"] }
+
 # Serde
 serde = { version = "1.0.193", default-features = false, features = ["derive"] }
-serde_json = "1.0.108"
+serde_json = { version = "1.0.108", default-features = false, features = [
+    "raw_value",
+] }
 
 # Tokio / Futures
 futures = "0.3.30"
@@ -20,11 +31,6 @@ tokio-stream = { version = "0.1.14", default-features = false, features = [
     "sync",
 ] }
 
-# GraphQL
-graphql_client = { version = "0.13.0", default-features = false, features = [
-    "graphql_query_derive",
-] }
-
 # HTTP / Websocket
 tokio-tungstenite = { version = "0.21.0", default-features = false, features = [
     "rustls",
@@ -32,10 +38,14 @@ tokio-tungstenite = { version = "0.21.0", default-features = false, features = [
     "native-tls",
 ] }
 
-# External
+# GraphQL
+graphql_client = { version = "0.13.0", default-features = false, features = [
+    "graphql_query_derive",
+] }
+
+# Helpers
 url = "2.5.0"
 uuid = { version = "1.6.1", default-features = false, features = [
     "v4",
     "serde",
 ] }
-anyhow = "1.0.77"

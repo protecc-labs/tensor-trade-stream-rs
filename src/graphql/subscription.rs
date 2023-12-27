@@ -5,7 +5,6 @@ use std::{
 };
 
 use anyhow::Result;
-use futures::SinkExt;
 use graphql_client::GraphQLQuery;
 use serde::{Deserialize, Serialize};
 use tokio::sync::{
@@ -13,8 +12,6 @@ use tokio::sync::{
     {mpsc, oneshot},
 };
 use tokio_stream::{wrappers::BroadcastStream, Stream, StreamExt};
-use tokio_tungstenite::{connect_async, tungstenite};
-use url::Url;
 use uuid::Uuid;
 
 /// Subscription GraphQL response, returned from an active stream.
@@ -44,18 +41,18 @@ impl Payload {
         Self {
             id,
             payload_type: "connection_init".to_owned(),
-            payload: serde_json::json!({}),
+            payload: serde_json::Value::Null,
         }
     }
 
-    /// Returns a "start" payload necessary for starting a new subscription.
-    pub fn start<T: GraphQLQuery + Send + Sync>(
+    /// Returns a "subscribe" payload necessary for starting a new subscription.
+    pub fn subscribe<T: GraphQLQuery + Send + Sync>(
         id: Uuid,
         payload: &graphql_client::QueryBody<T::Variables>,
     ) -> Self {
         Self {
             id,
-            payload_type: "start".to_owned(),
+            payload_type: "subscribe".to_owned(),
             payload: serde_json::json!(payload),
         }
     }
@@ -91,7 +88,10 @@ impl SubscriptionClient {
     /// Create a new subscription client.
     /// `tx` is a channel for sending `Payload`s to the GraphQL server;
     /// `rx` is a channel for `Payload` back.
-    fn new(tx: mpsc::UnboundedSender<Payload>, mut rx: mpsc::UnboundedReceiver<Payload>) -> Self {
+    pub fn new(
+        tx: mpsc::UnboundedSender<Payload>,
+        mut rx: mpsc::UnboundedReceiver<Payload>,
+    ) -> Self {
         // `oneshot`` channel for cancelling the listener if `SubscriptionClient`` is dropped.
         let (_shutdown_tx, mut shutdown_rx) = oneshot::channel::<()>();
 
@@ -162,86 +162,12 @@ impl SubscriptionClient {
 
         // Initialize the connection with the relevant control messages.
         _ = self.tx.send(Payload::init(id));
-        _ = self.tx.send(Payload::start::<T>(id, request_body));
+        _ = self.tx.send(Payload::subscribe::<T>(id, request_body));
 
         Box::pin(
             BroadcastStream::new(rx)
                 .filter(Result::is_ok)
                 .map(|payload| payload.unwrap().response::<T>()),
         )
-    }
-}
-
-/// Connect to a new WebSocket GraphQL server endpoint, and return a `SubscriptionClient`.
-/// This method will:
-/// a) connect to a ws(s):// endpoint, and perform the initial handshake, and
-/// b) set up channel forwarding to expose just the returned `Payload`s to the client.
-async fn connect_subscription_client(url: Url) -> Result<SubscriptionClient, tungstenite::Error> {
-    let (ws, _) = connect_async(url).await?;
-
-    let (mut ws_tx, mut ws_rx) = futures::StreamExt::split(ws);
-
-    let (send_tx, mut send_rx) = mpsc::unbounded_channel::<Payload>();
-    let (recv_tx, recv_rx) = mpsc::unbounded_channel::<Payload>();
-
-    // Forwarded received messages back upstream to the GraphQL server.
-    tokio::spawn(async move {
-        while let Some(payload) = send_rx.recv().await {
-            dbg!(serde_json::json!(payload.clone()));
-            let result = ws_tx
-                .send(tungstenite::Message::Text(
-                    serde_json::to_string(&payload).unwrap().trim().to_string(),
-                ))
-                .await;
-            dbg!(result);
-        }
-    });
-
-    // Forward received messages to the receiver channel.
-    tokio::spawn(async move {
-        while let Some(Ok(tungstenite::Message::Text(message))) = ws_rx.next().await {
-            if let Ok(payload) = serde_json::from_str::<Payload>(&message) {
-                _ = recv_tx.send(payload);
-            }
-        }
-    });
-
-    Ok(SubscriptionClient::new(send_tx, recv_rx))
-}
-
-#[derive(Debug, Deserialize)]
-struct Decimal(f64);
-
-#[derive(Debug, Deserialize)]
-struct Timestamp(i64);
-
-#[derive(Debug, Deserialize)]
-struct BigInt(String);
-
-#[derive(GraphQLQuery, Debug, Deserialize)]
-#[graphql(
-    schema_path = "graphql/schema.json",
-    query_path = "graphql/subscriptions/tensorswap_pool_updates.graphql",
-    response_derives = "Debug"
-)]
-pub struct TswapOrderUpdateAll;
-
-#[tokio::main]
-async fn main() -> Result<()> {
-    let subscription_client =
-        connect_subscription_client(Url::parse("wss://api.tensor.so/graphql")?).await?;
-
-    let request_body = TswapOrderUpdateAll::build_query(tswap_order_update_all::Variables {});
-
-    let mut stream: BoxedSubscription<TswapOrderUpdateAll> =
-        subscription_client.start::<TswapOrderUpdateAll>(&request_body);
-
-    loop {
-        let message = stream.next().await;
-        if let Some(Some(response)) = message {
-            if let Some(response_data) = response.data {
-                println!("{:?}", response_data);
-            }
-        }
     }
 }
