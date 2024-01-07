@@ -1,5 +1,3 @@
-# tensor-stream
+# tensor-trade-stream
 
-Crate for receiving updates from the Tensor API.
-
-DEPRECATED. Please check [tensor-trade-stream](https://crates.io/crates/tensor-stream).
+A client for receiving updates from Tensor Trade Marketplace over WebSocket using GraphQL subscriptions.
