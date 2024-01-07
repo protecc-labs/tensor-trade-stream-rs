@@ -1,9 +1,9 @@
 [package]
-name = "tensor-stream"
-version = "0.1.1"
+name = "tensor-trade-stream"
+version = "0.1.0"
 edition = "2021"
 authors = ["mektigboy <mektigboy@protonmail.com>"]
-description = "A Rust client library for real-time updates from the Tensor NFT marketplace and its aggregated marketplaces, using GraphQL subscriptions."
+description = "A client for receiving updates from Tensor Trade Marketplace over WebSocket using GraphQL subscriptions."
 repository = "https://github.com/protecc-labs/tensor-stream-rs"
 license = "MIT"
 categories = ["graphql", "websockets", "nft"]

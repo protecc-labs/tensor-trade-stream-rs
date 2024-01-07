@@ -3,9 +3,9 @@ use graphql_client::GraphQLQuery;
 use tokio_stream::StreamExt;
 use url::Url;
 
-extern crate tensor_stream;
+extern crate tensor_trade_stream;
 
-use tensor_stream::{
+use tensor_trade_stream::{
     connect_subscription_client,
     graphql::{
         subscription::BoxedSubscription,
