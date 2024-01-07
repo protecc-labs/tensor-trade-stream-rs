@@ -92,7 +92,7 @@ impl SubscriptionClient {
         tx: mpsc::UnboundedSender<Payload>,
         mut rx: mpsc::UnboundedReceiver<Payload>,
     ) -> Self {
-        // `oneshot`` channel for cancelling the listener if `SubscriptionClient`` is dropped.
+        // `oneshot` channel for cancelling the listener if `SubscriptionClient`` is dropped.
         let (_shutdown_tx, mut shutdown_rx) = oneshot::channel::<()>();
 
         let subscriptions = Arc::new(Mutex::new(HashMap::new()));

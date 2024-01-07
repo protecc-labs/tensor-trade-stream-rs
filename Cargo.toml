@@ -1,49 +1,38 @@
 [package]
 name = "tensor-trade-stream"
-version = "0.1.1"
+version = "0.2.0"
 edition = "2021"
 authors = ["mektigboy <mektigboy@protonmail.com>"]
 description = "A client for receiving updates from Tensor Trade Marketplace over WebSocket using GraphQL subscriptions."
-repository = "https://github.com/protecc-labs/tensor-stream-rs"
+repository = "https://github.com/protecc-labs/tensor-tensor-stream-rs"
 license = "MIT"
-categories = ["graphql", "websockets", "nft"]
-keywords = ["tensor", "tensorswap"]
+categories = ["api-bindings"]
+keywords = ["crypto", "api"]
 
 [dependencies]
 
-# Error handling
 anyhow = { version = "1.0.77", default-features = false, features = ["std"] }
-
-# Serde
 serde = { version = "1.0.193", default-features = false, features = ["derive"] }
 serde_json = { version = "1.0.108", default-features = false, features = [
     "raw_value",
 ] }
-
-# Tokio / Futures
-futures = "0.3.30"
-tokio = { version = "1.35.1", default-features = false, features = [
-    "macros",
-    "sync",
-    "rt-multi-thread",
-] }
 tokio-stream = { version = "0.1.14", default-features = false, features = [
     "sync",
 ] }
-
-# HTTP / Websocket
+futures = "0.3.30"
+tokio = { version = "1.35.1", default-features = false, features = [
+    "macros",
+    "rt-multi-thread",
+    "time",
+] }
 tokio-tungstenite = { version = "0.21.0", default-features = false, features = [
     "rustls",
     "connect",
     "native-tls",
 ] }
-
-# GraphQL
 graphql_client = { version = "0.13.0", default-features = false, features = [
     "graphql_query_derive",
 ] }
-
-# Helpers
 url = "2.5.0"
 uuid = { version = "1.6.1", default-features = false, features = [
     "v4",

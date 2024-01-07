@@ -13,7 +13,15 @@ struct BigInt(String);
 #[derive(GraphQLQuery, Debug, Deserialize)]
 #[graphql(
     schema_path = "graphql/schema.json",
-    query_path = "graphql/subscriptions/tensorswap_pool_updates.graphql",
+    query_path = "graphql/subscriptions/tswap_order_update_all.graphql",
     response_derives = "Debug"
 )]
 pub struct TswapOrderUpdateAll;
+
+#[derive(GraphQLQuery, Debug, Deserialize)]
+#[graphql(
+    schema_path = "graphql/schema.json",
+    query_path = "graphql/subscriptions/tswap_order_update.graphql",
+    response_derives = "Debug"
+)]
+pub struct TswapOrderUpdate;

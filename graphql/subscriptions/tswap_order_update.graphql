@@ -1,0 +1,29 @@
+subscription TswapOrderUpdate($slug: String!) {
+  tswapOrderUpdate(slug: $slug) {
+    address
+    pool {
+      address
+      createdUnix
+      curveType
+      delta
+      mmCompoundFees
+      mmFeeBps
+      nftsForSale {
+        onchainId
+      }
+      nftsHeld
+      ownerAddress
+      poolType
+      solBalance
+      startingPrice
+      buyNowPrice
+      sellNowPrice
+      statsAccumulatedMmProfit
+      statsTakerBuyCount
+      statsTakerSellCount
+      takerBuyCount
+      takerSellCount
+      updatedAt
+    }
+  }
+}
