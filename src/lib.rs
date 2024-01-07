@@ -13,13 +13,15 @@ pub mod graphql;
 
 use graphql::subscription::{Payload, SubscriptionClient};
 
+const URL: &str = "wss://api.tensor.so/graphql";
+
 /// Connect to a new WebSocket GraphQL server endpoint, and return a `SubscriptionClient`.
 /// This method will:
 /// a) connect to a ws(s):// endpoint, and perform the initial handshake, and
 /// b) set up channel forwarding to expose just the returned `Payload`s to the client.
-pub async fn connect_subscription_client(
-    url: Url,
-) -> Result<SubscriptionClient, tungstenite::Error> {
+pub async fn connect_subscription_client() -> Result<SubscriptionClient, tungstenite::Error> {
+    let url = Url::parse(URL).unwrap();
+
     let mut request = url.into_client_request().unwrap();
     request.headers_mut().insert(
         "Sec-WebSocket-Protocol",
