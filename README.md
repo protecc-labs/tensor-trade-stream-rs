@@ -2,4 +2,4 @@
 
 Crate for receiving updates from the Tensor API.
 
-## Example
+DEPRECATED. Please check [tensor-trade-stream](https://crates.io/crates/tensor-stream).

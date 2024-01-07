@@ -1,6 +1,6 @@
 [package]
 name = "tensor-stream"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 authors = ["mektigboy <mektigboy@protonmail.com>"]
 description = "A Rust client library for real-time updates from the Tensor NFT marketplace and its aggregated marketplaces, using GraphQL subscriptions."
