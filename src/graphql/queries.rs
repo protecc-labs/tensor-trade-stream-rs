@@ -25,3 +25,11 @@ pub struct TswapOrderUpdateAll;
     response_derives = "Debug"
 )]
 pub struct TswapOrderUpdate;
+
+#[derive(GraphQLQuery, Debug, Deserialize)]
+#[graphql(
+    schema_path = "graphql/schema.json",
+    query_path = "graphql/subscriptions/new_transaction_t_v2.graphql",
+    response_derives = "Debug"
+)]
+pub struct NewTransactionTV2;

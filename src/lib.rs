@@ -17,7 +17,11 @@ use url::Url;
 pub mod graphql;
 
 use graphql::{
-    queries::{tswap_order_update, tswap_order_update_all, TswapOrderUpdate, TswapOrderUpdateAll},
+    queries::{
+        new_transaction_tv2::{self, NewTransactionTv2NewTransactionTv2},
+        tswap_order_update, tswap_order_update_all, NewTransactionTV2, TswapOrderUpdate,
+        TswapOrderUpdateAll,
+    },
     subscription::{BoxedSubscription, Payload, SubscriptionClient},
 };
 
@@ -84,4 +88,15 @@ pub fn subscribe_collection(
     });
 
     subscription_client.start::<TswapOrderUpdate>(&request_body)
+}
+
+pub fn subscribe_transactions(
+    subscription_client: &SubscriptionClient,
+    slug: &str,
+) -> BoxedSubscription<NewTransactionTV2> {
+    let request_body = NewTransactionTV2::build_query(new_transaction_tv2::Variables {
+        slug: slug.to_string(),
+    });
+
+    subscription_client.start::<NewTransactionTV2>(&request_body)
 }
