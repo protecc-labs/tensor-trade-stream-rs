@@ -2,7 +2,7 @@ use graphql_client::GraphQLQuery;
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
-struct Decimal(f64);
+struct Decimal(String);
 
 #[derive(Debug, Deserialize)]
 struct Timestamp(i64);
