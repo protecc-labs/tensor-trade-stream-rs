@@ -1,6 +1,6 @@
 [package]
 name = "tensor-trade-stream"
-version = "0.4.0"
+version = "0.5.0"
 edition = "2021"
 authors = ["mektigboy <mektigboy@protonmail.com>"]
 description = "A client for receiving updates from Tensor Trade Marketplace over WebSocket using GraphQL subscriptions."

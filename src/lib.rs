@@ -25,6 +25,12 @@ pub type TransactionVariables = queries::new_transaction_tv2::Variables;
 pub type TensorswapOrderUpdateVariables = queries::tswap_order_update::Variables;
 pub type TensorswapOrderUpdateAllVariables = queries::tswap_order_update_all::Variables;
 
+pub type TransactionResponse = queries::new_transaction_tv2::NewTransactionTv2NewTransactionTv2;
+pub type TensorswapOrderUpdateResponse =
+    queries::tswap_order_update::TswapOrderUpdateTswapOrderUpdate;
+pub type TensorswapOrderUpdateAllResponse =
+    queries::tswap_order_update_all::TswapOrderUpdateAllTswapOrderUpdateAll;
+
 pub async fn subscribe<T: GraphQLQuery + Send + Sync + Unpin + 'static>(
     variables: T::Variables,
 ) -> Result<(
