@@ -1,6 +1,6 @@
 [package]
 name = "tensor-trade-stream"
-version = "0.5.1"
+version = "0.5.2"
 edition = "2021"
 authors = ["mektigboy <mektigboy@protonmail.com>"]
 description = "A client for receiving updates from Tensor Trade Marketplace over WebSocket using GraphQL subscriptions."
@@ -11,7 +11,6 @@ keywords = ["crypto", "api"]
 
 [dependencies]
 
-anyhow = { version = "1.0.77", default-features = false, features = ["std"] }
 serde = { version = "1.0.193", default-features = false, features = ["derive"] }
 futures = "0.3.30"
 tokio = { version = "1.35.1", default-features = false, features = [
@@ -29,3 +28,4 @@ async-tungstenite = { version = "0.24.0", features = [
     "tokio-runtime",
     "tokio-rustls-native-certs",
 ] }
+eyre = "0.6.11"

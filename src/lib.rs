@@ -1,10 +1,9 @@
-use anyhow::Result;
-
 use async_tungstenite::tungstenite::{
     client::IntoClientRequest,
     http::{header, HeaderValue},
     Message,
 };
+use eyre::Result;
 use futures::StreamExt;
 use graphql_client::GraphQLQuery;
 use graphql_ws_client::{

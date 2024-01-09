@@ -1,4 +1,4 @@
-use anyhow::Result;
+use eyre::Result;
 use futures::StreamExt;
 use tensor_trade_stream::{
     subscribe, TensorswapOrderUpdateAllQuery, TensorswapOrderUpdateAllResponse,
