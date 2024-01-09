@@ -1,35 +1,35 @@
 use graphql_client::GraphQLQuery;
 use serde::Deserialize;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 struct Decimal(String);
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 struct Timestamp(i64);
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 struct BigInt(String);
 
-#[derive(GraphQLQuery, Debug, Deserialize)]
+#[derive(GraphQLQuery, Debug, Clone, Deserialize)]
 #[graphql(
     schema_path = "graphql/schema.json",
     query_path = "graphql/subscriptions/tswap_order_update_all.graphql",
-    response_derives = "Debug"
+    response_derives = "Debug, Clone"
 )]
 pub struct TswapOrderUpdateAll;
 
-#[derive(GraphQLQuery, Debug, Deserialize)]
+#[derive(GraphQLQuery, Debug, Clone, Deserialize)]
 #[graphql(
     schema_path = "graphql/schema.json",
     query_path = "graphql/subscriptions/tswap_order_update.graphql",
-    response_derives = "Debug"
+    response_derives = "Debug, Clone"
 )]
 pub struct TswapOrderUpdate;
 
-#[derive(GraphQLQuery, Debug, Deserialize)]
+#[derive(GraphQLQuery, Debug, Clone, Deserialize)]
 #[graphql(
     schema_path = "graphql/schema.json",
     query_path = "graphql/subscriptions/new_transaction_t_v2.graphql",
-    response_derives = "Debug"
+    response_derives = "Debug, Clone"
 )]
 pub struct NewTransactionTV2;
