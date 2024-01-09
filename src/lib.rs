@@ -11,7 +11,7 @@ use graphql_ws_client::{
     AsyncWebsocketClient, GraphQLClientClientBuilder, SubscriptionStream,
 };
 
-mod queries;
+pub mod queries;
 mod tokio_spawner;
 
 use tokio_spawner::TokioSpawner;
@@ -30,16 +30,7 @@ pub type TensorswapOrderUpdateResponse =
 pub type TensorswapOrderUpdateAllResponse =
     queries::tswap_order_update_all::TswapOrderUpdateAllTswapOrderUpdateAll;
 
-pub async fn subscribe<T: GraphQLQuery + Send + Sync + Unpin + 'static>(
-    variables: T::Variables,
-) -> Result<(
-    AsyncWebsocketClient<GraphQLClient, Message>,
-    SubscriptionStream<GraphQLClient, StreamingOperation<T>>,
-)>
-where
-    <T as GraphQLQuery>::Variables: Send + Sync + Unpin,
-    <T as GraphQLQuery>::ResponseData: std::fmt::Debug,
-{
+pub async fn connect() -> Result<AsyncWebsocketClient<GraphQLClient, Message>> {
     let mut request = "wss://api.tensor.so/graphql".into_client_request()?;
     request.headers_mut().insert(
         header::SEC_WEBSOCKET_PROTOCOL,
@@ -50,13 +41,24 @@ where
 
     let (sink, stream) = connection.split::<Message>();
 
-    let mut client = GraphQLClientClientBuilder::new()
+    let client = GraphQLClientClientBuilder::new()
         .build(stream, sink, TokioSpawner::current())
         .await?;
 
+    Ok(client)
+}
+
+pub async fn subscribe<T: GraphQLQuery + Send + Sync + Unpin + 'static>(
+    mut client: AsyncWebsocketClient<GraphQLClient, Message>,
+    variables: T::Variables,
+) -> Result<SubscriptionStream<GraphQLClient, StreamingOperation<T>>>
+where
+    <T as GraphQLQuery>::Variables: Send + Sync + Unpin,
+    <T as GraphQLQuery>::ResponseData: std::fmt::Debug,
+{
     let stream = client
         .streaming_operation(StreamingOperation::<T>::new(variables))
         .await?;
 
-    Ok((client, stream))
+    Ok(stream)
 }
