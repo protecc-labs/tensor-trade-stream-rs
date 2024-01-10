@@ -2,13 +2,31 @@ use graphql_client::GraphQLQuery;
 use serde::Deserialize;
 
 #[derive(Debug, Clone, Deserialize)]
-pub struct Decimal(pub String);
+pub struct Decimal(String);
+
+impl Into<String> for Decimal {
+    fn into(self) -> String {
+        self.0
+    }
+}
 
 #[derive(Debug, Clone, Deserialize)]
-pub struct Timestamp(pub i64);
+pub struct Timestamp(i64);
+
+impl Into<i64> for Timestamp {
+    fn into(self) -> i64 {
+        self.0
+    }
+}
 
 #[derive(Debug, Clone, Deserialize)]
-pub struct BigInt(pub String);
+pub struct BigInt(String);
+
+impl Into<String> for BigInt {
+    fn into(self) -> String {
+        self.0
+    }
+}
 
 #[derive(GraphQLQuery, Debug, Clone, Deserialize)]
 #[graphql(
