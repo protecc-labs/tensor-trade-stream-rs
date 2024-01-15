@@ -31,6 +31,7 @@ pub type TensorswapOrderUpdateAllResponse =
     queries::tswap_order_update_all::TswapOrderUpdateAllTswapOrderUpdateAll;
 
 pub async fn subscribe<T: GraphQLQuery + Send + Sync + Unpin + 'static>(
+    api_key: &str,
     variables: T::Variables,
 ) -> Result<(
     AsyncWebsocketClient<GraphQLClient, Message>,
@@ -45,6 +46,9 @@ where
         header::SEC_WEBSOCKET_PROTOCOL,
         HeaderValue::from_str("graphql-transport-ws")?,
     );
+    request
+        .headers_mut()
+        .insert("X-TENSOR-API-KEY", HeaderValue::from_str(api_key)?);
 
     let (connection, _) = async_tungstenite::tokio::connect_async(request).await?;
 

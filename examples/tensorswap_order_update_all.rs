@@ -6,8 +6,13 @@ use tensor_trade_stream::{
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    let (_client, mut stream) =
-        subscribe::<TensorswapOrderUpdateAllQuery>(TensorswapOrderUpdateAllVariables {}).await?;
+    dotenv::dotenv().ok();
+
+    let (_client, mut stream) = subscribe::<TensorswapOrderUpdateAllQuery>(
+        &std::env::var("TENSOR_TRADE_API_KEY")?,
+        TensorswapOrderUpdateAllVariables {},
+    )
+    .await?;
 
     while let Some(response) = stream.next().await {
         dbg!(&response);

@@ -1,6 +1,6 @@
 [package]
 name = "tensor-trade-stream"
-version = "0.5.6"
+version = "0.6.0"
 edition = "2021"
 authors = ["mektigboy <mektigboy@protonmail.com>"]
 description = "A client for receiving updates from Tensor Trade Marketplace over WebSocket using GraphQL subscriptions."
@@ -29,3 +29,4 @@ async-tungstenite = { version = "0.24.0", features = [
     "tokio-rustls-native-certs",
 ] }
 eyre = "0.6.11"
+dotenv = "0.15.0"
