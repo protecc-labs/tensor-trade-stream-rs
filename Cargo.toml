@@ -1,10 +1,10 @@
 [package]
 name = "tensor-trade-stream"
-version = "0.6.1"
+version = "0.6.2"
 edition = "2021"
 authors = ["mektigboy <mektigboy@protonmail.com>"]
 description = "A client for receiving updates from Tensor Trade Marketplace over WebSocket using GraphQL subscriptions."
-repository = "https://github.com/protecc-labs/tensor-tensor-stream-rs"
+repository = "https://github.com/protecc-labs/tensor-tensor-stream-rs.rs"
 license = "MIT"
 categories = ["api-bindings"]
 keywords = ["crypto", "api"]

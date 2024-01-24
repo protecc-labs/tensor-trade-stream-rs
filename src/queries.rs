@@ -1,5 +1,6 @@
 use graphql_client::GraphQLQuery;
 use serde::Deserialize;
+use std::num::ParseFloatError;
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct Decimal(String);
@@ -7,6 +8,12 @@ pub struct Decimal(String);
 impl Into<String> for Decimal {
     fn into(self) -> String {
         self.0
+    }
+}
+
+impl Into<Result<f64, ParseFloatError>> for Decimal {
+    fn into(self) -> Result<f64, std::num::ParseFloatError> {
+        self.0.parse::<f64>()
     }
 }
 
