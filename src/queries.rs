@@ -1,37 +1,30 @@
 use graphql_client::GraphQLQuery;
 use serde::Deserialize;
-use std::num::ParseFloatError;
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct Decimal(String);
 
-impl Into<String> for Decimal {
-    fn into(self) -> String {
-        self.0
-    }
-}
-
-impl Into<Result<f64, ParseFloatError>> for Decimal {
-    fn into(self) -> Result<f64, std::num::ParseFloatError> {
-        self.0.parse::<f64>()
+impl From<Decimal> for String {
+    fn from(decimal: Decimal) -> Self {
+        decimal.0
     }
 }
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct Timestamp(i64);
 
-impl Into<i64> for Timestamp {
-    fn into(self) -> i64 {
-        self.0
+impl From<Timestamp> for i64 {
+    fn from(timestamp: Timestamp) -> Self {
+        timestamp.0
     }
 }
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct BigInt(String);
 
-impl Into<String> for BigInt {
-    fn into(self) -> String {
-        self.0
+impl From<BigInt> for String {
+    fn from(big_int: BigInt) -> Self {
+        big_int.0
     }
 }
 
