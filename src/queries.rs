@@ -2,29 +2,47 @@ use graphql_client::GraphQLQuery;
 use serde::Deserialize;
 
 #[derive(Debug, Clone, Deserialize)]
-pub struct Decimal(String);
+pub struct Decimal(pub String);
 
-impl From<Decimal> for String {
-    fn from(decimal: Decimal) -> Self {
-        decimal.0
+impl Decimal {
+    pub fn new(decimal: String) -> Self {
+        Self(decimal)
+    }
+}
+
+impl From<String> for Decimal {
+    fn from(item: String) -> Self {
+        Self::new(item)
     }
 }
 
 #[derive(Debug, Clone, Deserialize)]
-pub struct Timestamp(i64);
+pub struct Timestamp(pub i64);
 
-impl From<Timestamp> for i64 {
-    fn from(timestamp: Timestamp) -> Self {
-        timestamp.0
+impl Timestamp {
+    pub fn new(timestamp: i64) -> Self {
+        Self(timestamp)
+    }
+}
+
+impl From<i64> for Timestamp {
+    fn from(item: i64) -> Self {
+        Self::new(item)
     }
 }
 
 #[derive(Debug, Clone, Deserialize)]
-pub struct BigInt(String);
+pub struct BigInt(pub String);
 
-impl From<BigInt> for String {
-    fn from(big_int: BigInt) -> Self {
-        big_int.0
+impl BigInt {
+    pub fn new(big_int: String) -> Self {
+        Self(big_int)
+    }
+}
+
+impl From<String> for BigInt {
+    fn from(item: String) -> Self {
+        Self::new(item)
     }
 }
 
